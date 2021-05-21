@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="maindiv">
+    <div style="margin: 10px; display: flex; justify-content: space-between;">
+      <div style="align-self:center;">
+        <a href="#" class="notepadelogo">notepad</a>
+      </div>
+      <div class="subdiv2">
+        <a href="#" style="font-size: 30px;" onclick="reloadpage()">+</a>
+        <a href="#">SP</a>
+        <a href="#" id="monofont" onclick="monofonts()">MO</a>
+      </div>
+    </div>
+    <textarea id="textarea1"></textarea>
+    <div class="subdiv1">
+      <img src="./resizeimage.jpg" alt="resizeimage" onclick="changesize()">
+      <input type="button" value="+" onclick="bigfont()">
+      <input type="button" value="-" onclick="smallfont()">
+      <input type="button" value="Raw" onclick="openrawpage()">
+      <input type="button" value="MarkDown">
+      <input type="button" value="Code">
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+  let maindiv = document.getElementById("maindiv");
+  let textarea1 = document.getElementById("textarea1");
+  let storedinput = localStorage.getItem('textinput');
+
+  textarea1.textContent = storedinput;
+  
+  textarea1.addEventListener('input', letter => {
+    localStorage.setItem('textinput', letter.target.value);
+  })
+
+  function openrawpage() {
+    window.open("rawtext.html", '_blank');
+  }
+
+  function reloadpage() {
+    localStorage.removeItem('textinput')
+    window.location.reload(true);
+  }
+
+  function monofonts() {
+    if (textarea1.style.fontFamily == "monospace")
+      textarea1.style.fontFamily = "unset";
+    else
+      textarea1.style.fontFamily = "monospace";
+  }
+
+  function changesize() {
+    if (maindiv.style.width == "80%")
+      maindiv.style.width = "60%";
+    else
+      maindiv.style.width = "80%";
+
+    maindiv.style.transition = "width 0.5s ease"
+  }
+
+  function bigfont() {
+    let oldval = 0;
+    let newval = "";
+    if (textarea1.style.fontSize)
+      oldval = parseInt(textarea1.style.fontSize.slice(0, 2));
+    if (oldval != 90) {
+      newval = (oldval + 15) + "px";
+      textarea1.style.fontSize = newval;
+    }
+  }
+
+  function smallfont() {
+    let oldval = 0;
+    let newval = "";
+    if (textarea1.style.fontSize)
+      oldval = parseInt(textarea1.style.fontSize.slice(0, 2));
+    if (oldval > 15) {
+      newval = (oldval - 15) + "px";
+      textarea1.style.fontSize = newval;
+    }
+  }
+</script>
